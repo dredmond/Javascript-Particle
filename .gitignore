@@ -1,1 +1,4 @@
 _ReSharper.HTML5Particle/
+*.suo
+bin/
+obj/
