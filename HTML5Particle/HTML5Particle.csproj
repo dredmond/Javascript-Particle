@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="index.htm" />
+    <Content Include="js\debugConsole.js" />
     <Content Include="js\emitter.js" />
     <Content Include="js\particle.js" />
     <Content Include="Web.config" />

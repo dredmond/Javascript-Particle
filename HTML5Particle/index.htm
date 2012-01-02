@@ -1,9 +1,48 @@
 ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title></title>
-</head>
-<body>
+<html>
+    <head>
+        <title>HTML 5 Particle Engine</title>
+        <style>
+        	#gameCanvas {
+        		width: 800px;
+        		height: 600px;
+        		background-color: white;
+        		border: black solid 1px;
+        	}
+        	
+        	#body {
+        		padding: 0;
+        		margin: 0;
+        		text-align: center;
+        	}
+        </style>
+        <script type="text/javascript" src="js/particle.js"></script>
+        <script type="text/javascript" src="js/debugConsole.js"></script>
+    </head>
+    <body id="body">
+        <br/><br/>
+        <canvas id="gameCanvas">
+            
+        </canvas>
+        <div id="debugConsole"></div>
+        
+        <!-- Execute Scripts! -->
+        <script type="text/javascript">
+            debugConsole.init('debugConsole');
+            var canvas = document.getElementById('gameCanvas');
+            
+            if (canvas && canvas.getContext) {
+                var ctx = canvas.getContext('2d');
 
-</body>
+                // Create a test particle
+                var p = new Particle();
+                p.setLocation(5, 5);
+                
+                // Output the debug information.
+                debugConsole.write(p.debug());
+            } else {
+                debugConsole.write('Your browser does not support the HTML 5 Canvas.');
+            }
+        </script>
+    </body>
 </html>
