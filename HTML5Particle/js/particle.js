@@ -10,7 +10,7 @@
     };
 
     this.debug = function () {
-        return location.x + ', ' + location.y;
+        return 'Loc: ' + location.x + ', ' + location.y;
     };
 
     this.update = function() {

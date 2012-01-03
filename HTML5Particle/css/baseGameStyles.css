@@ -1,0 +1,14 @@
+﻿#gameCanvas {
+    width: 800px;
+    height: 600px;
+    background-color: white;
+    border: black solid 1px;
+    float: left;
+}
+        	
+#debugConsole {
+    display: inline-block;
+    float: left;
+    font-family: monospace;
+    padding: 0px 0px 0px 5px;
+}

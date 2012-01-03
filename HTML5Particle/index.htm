@@ -2,18 +2,17 @@
 <html>
     <head>
         <title>HTML 5 Particle Engine</title>
+        <link rel="stylesheet" href="css/baseGameStyles.css" />
         <style>
-        	#gameCanvas {
-        		width: 800px;
-        		height: 600px;
-        		background-color: white;
-        		border: black solid 1px;
-        	}
-        	
         	#body {
         		padding: 0;
         		margin: 0;
-        		text-align: center;
+        	}
+        	
+        	.contentWrapper {
+        		width: 1024px; 
+        		margin: auto; 
+        		clear: both;
         	}
         </style>
         <script type="text/javascript" src="js/particle.js"></script>
@@ -21,11 +20,12 @@
     </head>
     <body id="body">
         <br/><br/>
-        <canvas id="gameCanvas">
-            
-        </canvas>
-        <div id="debugConsole"></div>
-        
+        <div class="contentWrapper">
+            <canvas id="gameCanvas"></canvas>
+            <div id="debugConsole">Debug Console:<br /></div>
+            <div style="clear:both"></div>
+        </div>
+
         <!-- Execute Scripts! -->
         <script type="text/javascript">
             debugConsole.init('debugConsole');
