@@ -16,12 +16,13 @@
         	}
         </style>
         <script type="text/javascript" src="js/particle.js"></script>
+        <script type="text/javascript" src="js/emitter.js"></script>
         <script type="text/javascript" src="js/debugConsole.js"></script>
     </head>
     <body id="body">
         <br/><br/>
         <div class="contentWrapper">
-            <canvas id="gameCanvas"></canvas>
+            <canvas id="gameCanvas" width="800" height="600"></canvas>
             <div id="debugConsole">Debug Console:<br /></div>
             <div style="clear:both"></div>
         </div>
@@ -30,18 +31,43 @@
         <script type="text/javascript">
             debugConsole.init('debugConsole');
             var canvas = document.getElementById('gameCanvas');
-            
+            var canAnimate = true;
+
             if (canvas && canvas.getContext) {
                 var ctx = canvas.getContext('2d');
 
-                // Create a test particle
-                var p = new Particle();
-                p.setLocation(5, 5);
+                var e = new Emitter();
+                e.init(null);
+                debugConsole.write('Particle Engine Started.');
                 
-                // Output the debug information.
-                debugConsole.write(p.debug());
+                debugConsole.write('Testing Alpha Channels');
+                setInterval('AlphaTest()', 1);
+                
             } else {
                 debugConsole.write('Your browser does not support the HTML 5 Canvas.');
+            }
+
+            function AlphaTest() {
+                if (canAnimate) {
+                    // Set can animate to false so we don't get multiple calls.
+                    canAnimate = false;
+
+                    // Clear Screen
+                    ctx.clearRect(0, 0, 800, 600);
+
+                    // Do emitter update
+                    e.update();
+
+                    // Do emitter draw
+                    e.draw(ctx);
+
+                    // Create a test particle (ignore this code)
+                    var p = new Particle();
+                    p.setLocation(40, 40);
+                    p.draw(ctx, null);
+
+                    canAnimate = true;
+                }
             }
         </script>
     </body>
