@@ -7,10 +7,15 @@
     var _maxParticles = maxParticles;
     var _emitInterval = 0.0;
     var _lastEmit = 0;
+    var _color = new Color(0, 0, 0, 0);
     location.set(x, y);
 
     this.init = function (img) {
         lastFrameTime = new Date().getTime();
+    };
+
+    this.setColor = function (color) {
+        _color = color;
     };
 
     this.update = function () {
@@ -32,6 +37,7 @@
 
         if (particles.length < _maxParticles && _lastEmit > _emitInterval) {
             var p = new Particle(location.x, location.y, _maxSpeed, particleType.Smoke);
+            p.setColor(_color);
             particles.push(p);
             _lastEmit = 0;
         } else if (particles.length >= (_maxParticles - 1) && _lastEmit > _emitInterval) {

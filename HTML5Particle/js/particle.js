@@ -55,6 +55,12 @@ Vector.prototype.normalize = function () {
     this.mult(s);
 };
 
+function Color(red, green, blue, alpha) {
+    this.red = red;
+    this.blue = blue;
+    this.green = green;
+    this.alpha = alpha;
+};
 
 function Particle(x, y, maxSpeed, ptype) {
     var location = new Vector();
@@ -64,6 +70,7 @@ function Particle(x, y, maxSpeed, ptype) {
     var maxLife = 100;
     var acceleration = new Vector();
     var _maxSpeed = maxSpeed;
+    var _color = new Color(0, 0, 0, 0);
 
     // Get randomized acceleration values.
     acceleration.x = (Math.random() * (100)) - 50;
@@ -104,11 +111,11 @@ function Particle(x, y, maxSpeed, ptype) {
     };
 
     this.draw = function (ctx, img) {
-        var alpha = (energy / maxLife).toFixed(2);
-        ctx.fillStyle = 'rgba(190, 150, 190, ' + alpha + ')';
+        _color.alpha = (energy / maxLife).toFixed(2);
+        ctx.fillStyle = 'rgba(' + _color.red + ', ' + _color.green + ', ' + _color.blue + ', ' + _color.alpha + ')';
         ctx.save();
         ctx.beginPath();
-        ctx.arc(location.x, location.y, 50, 0, Math.PI * 2, true);
+        ctx.arc(location.x, location.y, 25, 0, Math.PI * 2, true);
         ctx.closePath();
         ctx.fill();
         ctx.restore();
@@ -120,5 +127,9 @@ function Particle(x, y, maxSpeed, ptype) {
         }
 
         return true;
+    };
+
+    this.setColor = function (color) {
+        _color = color;
     };
 };
