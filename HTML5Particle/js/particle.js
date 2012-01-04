@@ -25,6 +25,13 @@ Vector.prototype.add = function (vector) {
     this.y += vector.y;
 };
 
+Vector.prototype.distance = function(vector) {
+    var x = this.x - vector.x;
+    var y = this.y - vector.y;
+
+    return Math.sqrt(x * x + y * y);
+};
+
 Vector.prototype.mult = function (scalar) {
     this.x *= scalar;
     this.y *= scalar;
@@ -49,41 +56,59 @@ Vector.prototype.normalize = function () {
 };
 
 
-function Particle(x, y, minSpeed, maxSpeed, ptype) {
+function Particle(x, y, maxSpeed, ptype) {
     var location = new Vector();
-    location.set(x, y);
-
-    // Max speed actually needs to have the absolute value of minSpeed added to 
-    // it in order to compensate for the way random values are calculated.
-    maxSpeed += Math.abs(minSpeed);
-
     var velocity = new Vector();
-    velocity.x = (Math.random() * (maxSpeed + 1)) + minSpeed;
-    velocity.y = (Math.random() * (maxSpeed + 1)) + minSpeed;
+    location.set(x, y);
+    var gravity = 2000;
+    var maxLife = 100;
+    var acceleration = new Vector();
+    var _maxSpeed = maxSpeed;
+
+    // Get randomized acceleration values.
+    acceleration.x = (Math.random() * (500)) - 250;
+    acceleration.y = (Math.random() * (500)) - 250;
     
     this.type = ptype;
-    var energy = 100;
+    var energy = 10;
 
     this.debug = function () {
         return 'Loc: ' + location.x + ', ' + location.y;
     };
 
     this.update = function (delta) {
-        energy -= 1;
-        
+        if (this.type != particleType.Hair)
+            energy -= 10 * delta;
+
+        var tmpAcceleration = new Vector();
+        tmpAcceleration.copy(acceleration);
+        tmpAcceleration.mult(delta);
+        velocity.add(tmpAcceleration);
+
+        // Force velocities to stay at max speed.
+        if (velocity.x > 0 && velocity.x > _maxSpeed) velocity.x = _maxSpeed;
+        if (velocity.x < 0 && velocity.x < -_maxSpeed) velocity.x = -_maxSpeed;
+        if (velocity.y > 0 && velocity.y > _maxSpeed) velocity.y = _maxSpeed;
+        if (velocity.y < 0 && velocity.y < -_maxSpeed) velocity.y = -_maxSpeed;
+
+        // Copy the velocity vector and apply the delta.
         var tempVelocity = new Vector();
         tempVelocity.copy(velocity);
-        
         tempVelocity.mult(delta);
+
+        // Add new velocity to the current location of the particle.
         location.add(tempVelocity);
+
+        // Apply gravity.
+        velocity.y -= gravity * delta;
     };
 
     this.draw = function (ctx, img) {
-        var alpha = energy / 100;
-        ctx.fillStyle = 'rgba(0, 0, 0, ' + alpha + ')';
+        var alpha = (energy / maxLife).toFixed(2);
+        ctx.fillStyle = 'rgba(255, 0, 0, ' + alpha + ')';
         ctx.save();
         ctx.beginPath();
-        ctx.arc(location.x, location.y, 2, 0, Math.PI * 2, true);
+        ctx.arc(location.x, location.y, 8, 0, Math.PI * 2, true);
         ctx.closePath();
         ctx.fill();
         ctx.restore();
