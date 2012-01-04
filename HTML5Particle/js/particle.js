@@ -5,45 +5,77 @@ var particleType = { Smoke: 0, Fire: 1, Hair: 2 };
 function Vector () {
     this.x = 0;
     this.y = 0;
+};
 
-    this.add = function (vector) {
-        if (vector && vector.constructor !== Vector)
-            return;
-        
-        this.x += vector.x;
-        this.y += vector.y;
-    };
+Vector.prototype.set = function(x, y) {
+    this.x = x;
+    this.y = y;
+};
 
-    this.mult = function(scalar) {
-        this.x *= scalar;
-        this.y *= scalar;
-    };
-}
+Vector.prototype.copy = function(vector) {
+    this.x = vector.x;
+    this.y = vector.y;
+};
 
-function Particle (ptype) {
+Vector.prototype.add = function (vector) {
+    if (vector && vector.constructor !== Vector)
+        return;
+
+    this.x += vector.x;
+    this.y += vector.y;
+};
+
+Vector.prototype.mult = function (scalar) {
+    this.x *= scalar;
+    this.y *= scalar;
+};
+
+Vector.prototype.sub = function (vector) {
+    this.x -= vector.x;
+    this.y -= vector.y;
+};
+
+Vector.prototype.dot = function (vector) {
+    return this.x * vector.x + this.y + vector.y;
+};
+
+Vector.prototype.length = function () {
+    return Math.sqrt(this.x * this.x + this.y * this.y);
+};
+
+Vector.prototype.normalize = function () {
+    var s = 1 / this.length();
+    this.mult(s);
+};
+
+
+function Particle(x, y, minSpeed, maxSpeed, ptype) {
     var location = new Vector();
+    location.set(x, y);
+
+    // Max speed actually needs to have the absolute value of minSpeed added to 
+    // it in order to compensate for the way random values are calculated.
+    maxSpeed += Math.abs(minSpeed);
+
     var velocity = new Vector();
-    
-    velocity.x = (Math.random() * 10) - 1;
-    velocity.y = (Math.random() * 10) - 1;
+    velocity.x = (Math.random() * (maxSpeed + 1)) + minSpeed;
+    velocity.y = (Math.random() * (maxSpeed + 1)) + minSpeed;
     
     this.type = ptype;
     var energy = 100;
-
-    // Set the current location of the particle
-    this.setLocation = function (x, y) {
-        location.x = x;
-        location.y = y;
-    };
 
     this.debug = function () {
         return 'Loc: ' + location.x + ', ' + location.y;
     };
 
     this.update = function (delta) {
-        energy -= 1 * delta;
-        velocity.mult(delta);
-        location.add(velocity);
+        energy -= 1;
+        
+        var tempVelocity = new Vector();
+        tempVelocity.copy(velocity);
+        
+        tempVelocity.mult(delta);
+        location.add(tempVelocity);
     };
 
     this.draw = function (ctx, img) {

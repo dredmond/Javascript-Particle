@@ -1,15 +1,16 @@
-﻿function Emitter () {
+﻿function Emitter (x, y, minSpeed, maxSpeed, maxParticles) {
     var particles = [];
     var image = null;
     var lastFrameTime = 0;
+    var location = new Vector();
+    var _minSpeed = minSpeed;
+    var _maxSpeed = maxSpeed;
+    var _maxParticles = maxParticles;
+    location.set(x, y);
 
     this.init = function (img) {
-        for (var i = 0; i < 100; i++) {
-            var x = Math.random() * 801;
-            var y = Math.random() * 601;
-
-            var p = new Particle();
-            p.setLocation(x, y);
+        for (var i = 0; i < _maxParticles; i++) {
+            var p = new Particle(location.x, location.y, _minSpeed, _maxSpeed, particleType.Smoke);
             particles.push(p);
         }
 
@@ -18,7 +19,7 @@
 
     this.update = function () {
         var currentFrameTime = new Date().getTime();
-        var i, x, y;
+        var i;
 
         if (lastFrameTime == 0) {
             lastFrameTime = currentFrameTime;
@@ -37,10 +38,7 @@
             if (particles[i].dead()) {
 
                 // Create new particle.
-                particles[i] = new Particle();
-                x = Math.random() * 801;
-                y = Math.random() * 601;
-                particles[i].setLocation(x, y);
+                particles[i] = new Particle(location.x, location.y, _minSpeed, _maxSpeed, particleType.Smoke);
             }
         }
     };
