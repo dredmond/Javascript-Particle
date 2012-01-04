@@ -36,8 +36,10 @@
             if (canvas && canvas.getContext) {
                 var ctx = canvas.getContext('2d');
 
-                var e = new Emitter(400, 300, 400, 1000);
+                var e = new Emitter(400, 600, 300, 1000);
+                var e2 = new Emitter(490, 600, 300, 1000);
                 e.init(null);
+                e2.init(null);
                 debugConsole.write('Particle Engine Started.');
                 
                 debugConsole.write('Testing Alpha Channels');
@@ -57,9 +59,11 @@
 
                     // Do emitter update
                     e.update();
+                    e2.update();
 
                     // Do emitter draw
                     e.draw(ctx);
+                    e2.draw(ctx);
 
                     canAnimate = true;
                 }

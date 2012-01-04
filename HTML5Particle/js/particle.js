@@ -60,17 +60,17 @@ function Particle(x, y, maxSpeed, ptype) {
     var location = new Vector();
     var velocity = new Vector();
     location.set(x, y);
-    var gravity = 2000;
+    var gravity = 200;
     var maxLife = 100;
     var acceleration = new Vector();
     var _maxSpeed = maxSpeed;
 
     // Get randomized acceleration values.
-    acceleration.x = (Math.random() * (500)) - 250;
-    acceleration.y = (Math.random() * (500)) - 250;
+    acceleration.x = (Math.random() * (100)) - 50;
+    acceleration.y = (Math.random() * (100)) - 200;
     
     this.type = ptype;
-    var energy = 10;
+    var energy = 20;
 
     this.debug = function () {
         return 'Loc: ' + location.x + ', ' + location.y;
@@ -105,10 +105,10 @@ function Particle(x, y, maxSpeed, ptype) {
 
     this.draw = function (ctx, img) {
         var alpha = (energy / maxLife).toFixed(2);
-        ctx.fillStyle = 'rgba(255, 0, 0, ' + alpha + ')';
+        ctx.fillStyle = 'rgba(190, 150, 190, ' + alpha + ')';
         ctx.save();
         ctx.beginPath();
-        ctx.arc(location.x, location.y, 8, 0, Math.PI * 2, true);
+        ctx.arc(location.x, location.y, 50, 0, Math.PI * 2, true);
         ctx.closePath();
         ctx.fill();
         ctx.restore();

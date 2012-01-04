@@ -5,7 +5,7 @@
     var location = new Vector();
     var _maxSpeed = maxSpeed;
     var _maxParticles = maxParticles;
-    var _emitInterval = 0;
+    var _emitInterval = 0.0;
     var _lastEmit = 0;
     location.set(x, y);
 
@@ -34,6 +34,8 @@
             var p = new Particle(location.x, location.y, _maxSpeed, particleType.Smoke);
             particles.push(p);
             _lastEmit = 0;
+        } else if (particles.length >= (_maxParticles - 1) && _lastEmit > _emitInterval) {
+            debugConsole.write('At max particles!!');
         }
 
         for (i = particles.length - 1; i >= 0; i--) {
