@@ -1,5 +1,6 @@
 ﻿function Emitter (x, y, maxSpeed, maxParticles) {
-    var particles = [];
+    var particles = new Array(maxParticles);
+    var pCount = 0;
     var image = null;
     var lastFrameTime = 0;
     var location = new Vector();
@@ -33,22 +34,28 @@
 
         lastFrameTime = new Date().getTime();
 
-        _lastEmit += delta * 2;
+        _lastEmit += delta * 5.0;
 
-        if (particles.length < _maxParticles && _lastEmit > _emitInterval) {
+        debugConsole.clear();
+
+        if (pCount < _maxParticles && _lastEmit > _emitInterval) {
             var p = new Particle(location.x, location.y, _maxSpeed, particleType.Smoke);
             p.setColor(_color);
-            particles.push(p);
+            particles[pCount] = p;
+            pCount++;
             _lastEmit = 0;
-        } else if (particles.length >= (_maxParticles - 1) && _lastEmit > _emitInterval) {
-            debugConsole.write('At max particles!!');
+        } else if (pCount >= (_maxParticles - 1) && _lastEmit > _emitInterval) {
+            debugConsole.write('At max particles!!!');
         }
 
-        for (i = particles.length - 1; i >= 0; i--) {
+        //debugConsole.write('Particles: ' + pCount);
+
+        for (i = pCount - 1; i >= 0; i--) {
             particles[i].update(delta);
 
             if (particles[i].dead()) {
                 particles.splice(i, 1);
+                pCount--;
             }
         }
     };
